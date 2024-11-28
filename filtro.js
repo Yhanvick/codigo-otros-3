@@ -8,8 +8,9 @@ const productos = [
   {nombre: "Zapato rojo", tipo: "zapato", color: "rojo", img: "./zapato-rojo.jpg"}
 ]
 
-const li = document.getElementsByName("lista-de-productos")
-const $i = document.querySelector('.input');
+const listaDeProductos = document.getElementById("lista-de-productos"); // aqui se toma el elemento por su id (byName es para elementos con un name)
+const $i = document.getElementById("filtro"); // Usamos el id 'filtro' en lugar de la clase input como se seleccuinaba anteriormente con el querySelector
+
 
 for (let i = 0; i < productos.length; i++) {
   var d = document.createElement("div")
@@ -25,15 +26,15 @@ for (let i = 0; i < productos.length; i++) {
   d.appendChild(ti)
   d.appendChild(imagen)
 
-  li.appendChild(d)
+  listaDeProductos.appendChild(d) //el contenedor correcto es listaDeProductos, ya que li no es un contenedor para poder agregar productos
 }
 
-displayProductos(productos)
+displayProductos(productos) //función para mostrar los productos al cargar la página
 const botonDeFiltro = document.querySelector("button");
 
 botonDeFiltro.onclick = function() {
-  while (li.firstChild) {
-    li.removeChild(li.firstChild);
+  while (listaDeProductos.firstChild) {
+    listaDeProductos.removeChild(listaDeProductos.firstChild); //se sigue reemplazando li
   }
 
   const texto = $i.value;
@@ -54,10 +55,13 @@ botonDeFiltro.onclick = function() {
     d.appendChild(ti)
     d.appendChild(imagen)
   
-    li.appendChild(d)
+    listaDeProductos.appendChild(d)
   }
 }
 
 const filtrado = (productos = [], texto) => {
-  return productos.filter(item => item.tipo.includes(texto) || item.color.includes(texto));
-}  
+  return productos.filter(item => 
+    item.tipo.toLowerCase().includes(texto.toLowerCase()) || 
+    item.color.toLowerCase().includes(texto.toLowerCase())
+  );
+} //toLowerCase es un metodo que convierte el texto en  minúsculas, para asegurar que la comparacion de las cadenas se realicen, mientras que el método includes verifica si lo ingresado se encuentra en las propiedades de tipo y color  
